@@ -12,6 +12,7 @@ class UserRepository {
             RETURNING *
         `;
 
+
         const values = [
             user.name,
             user.email,
@@ -22,6 +23,20 @@ class UserRepository {
             await pool.query(query, values);
 
         return result.rows[0];
+    }
+
+    async findAll() {
+
+        const query = `
+        SELECT *
+        FROM users
+        ORDER BY id
+    `;
+
+        const result =
+            await pool.query(query);
+
+        return result.rows;
     }
 
 }

@@ -32,6 +32,27 @@ class UserController {
 
     }
 
+    async findAll(req, res) {
+
+        try {
+
+            const users =
+                await userRepository.findAll();
+
+            return res.status(200).json(users);
+
+        } catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+                message: 'Erro ao listar usuários'
+            });
+
+        }
+
+    }
+
 }
 
 module.exports = new UserController();
