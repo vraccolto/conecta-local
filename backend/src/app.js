@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 
+require('./events');
+
 const userRoutes =
     require('./routes/userRoutes');
 

@@ -15,4 +15,14 @@ router.get(
     adController.findAll
 );
 
+router.put(
+    '/ads/:id',
+    adController.update
+);
+
+router.delete(
+    '/ads/:id',
+    adController.delete
+);
+
 module.exports = router;
