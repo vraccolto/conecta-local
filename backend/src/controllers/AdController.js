@@ -2,6 +2,9 @@ const AdFactory = require('../factories/AdFactory');
 const adRepository = require('../repositories/AdRepository');
 const eventManager = require('../events/EventManager');
 const adCreatedObserver = require('../observers/AdCreatedObserver');
+const FilterContext = require('../strategies/FilterContext');
+const CategoryFilterStrategy = require('../strategies/CategoryFilterStrategy');
+const TitleFilterStrategy = require('../strategies/TitleFilterStrategy');
 
 class AdController {
 
@@ -53,17 +56,56 @@ class AdController {
 
         try {
 
+            const { category, title } =
+                req.query;
+
+            if (category) {
+
+                const context =
+                    new FilterContext(
+                        CategoryFilterStrategy
+                    );
+
+                const ads =
+                    await context.execute(
+                        category
+                    );
+
+                return res.status(200)
+                    .json(ads);
+
+            }
+
+            if (title) {
+
+                const context =
+                    new FilterContext(
+                        TitleFilterStrategy
+                    );
+
+                const ads =
+                    await context.execute(
+                        title
+                    );
+
+                return res.status(200)
+                    .json(ads);
+
+            }
+
             const ads =
                 await adRepository.findAll();
 
-            return res.status(200).json(ads);
+            return res.status(200)
+                .json(ads);
 
         } catch (error) {
 
             console.error(error);
 
             return res.status(500).json({
-                message: 'Erro ao listar anúncios'
+                message:
+                    'Erro ao listar anúncios'
             });
 
         }
