@@ -4,10 +4,14 @@ const cors = require('cors');
 const userRoutes =
     require('./routes/userRoutes');
 
+const adRoutes =
+    require('./routes/adRoutes');
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(adRoutes);
 app.use(userRoutes);
 
 app.get('/', (req, res) => {
