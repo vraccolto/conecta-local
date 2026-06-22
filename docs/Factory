@@ -1,0 +1,49 @@
+Onde está?
+src/factories/UserFactory.js
+src/factories/AdFactory.js
+Sem Factory
+
+No Controller:
+
+const user = new User(
+    name,
+    email,
+    password
+);
+
+O Controller precisaria conhecer a criação do objeto.
+
+Com Factory
+
+Controller:
+
+const user =
+    UserFactory.create(
+        name,
+        email,
+        password
+    );
+
+Factory:
+
+return new User(
+    name,
+    email,
+    password
+);
+Vantagem
+
+Se amanhã o User mudar:
+
+new User(
+    name,
+    email,
+    password,
+    createdAt
+);
+
+somente a Factory muda.
+
+O Controller continua igual.
+
+Utilizamos Factory para centralizar a criação dos objetos de domínio, reduzindo acoplamento entre Controllers e Models.
