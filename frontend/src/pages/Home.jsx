@@ -208,85 +208,37 @@ function Home() {
       </h2>
 
       <div
-
         style={{
-
           display: "grid",
-
-          gridTemplateColumns:
-  "repeat(auto-fit, minmax(350px, 1fr))",
-
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
           gap: "20px",
-
           maxHeight: "500px",
-
           overflowY: "auto",
-
-          marginTop: "20px"
-
+          marginTop: "20px",
+          paddingRight: "8px"
         }}
-
       >
 
-        {
+        {anuncios.map((anuncio) => (
+          <div
+            key={anuncio.id}
+            className="card"
+          >
 
-          anuncios.map((anuncio) => (
+            <div className="card-header">
+              <h3>{anuncio.title}</h3>
 
-            <div
-
-              key={anuncio.id}
-
-              style={{
-
-                background: "#fff",
-
-                padding: "25px",
-
-                minHeight: "180px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-
-                borderRadius: "10px",
-
-                boxShadow:
-                  "0 2px 8px rgba(0,0,0,.1)"
-
-              }}
-
-            >
-
-              <h3>
-
-                {anuncio.title}
-
-              </h3>
-
-              <p>
-
-                <strong>
-
-                  Categoria:
-
-                </strong>
-
-                {" "}
-
+              <span className="badge">
                 {anuncio.category}
-
-              </p>
-
-              <p>
-
-                {anuncio.description}
-
-              </p>
-
+              </span>
             </div>
 
-          ))
+            <p className="card-description">
+              {anuncio.description}
+            </p>
 
-        }
+          </div>
+        ))}
 
       </div>
     </div>

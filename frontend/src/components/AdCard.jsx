@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import api from "../services/api";
 
+
+
 function AdCard({ anuncio, atualizarLista }) {
 
     async function excluir() {
@@ -47,32 +49,19 @@ function AdCard({ anuncio, atualizarLista }) {
 
             <p>{anuncio.description}</p>
 
-            <div style={{ marginTop: "20px" }}>
+            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
 
                 <Link to={`/editar/${anuncio.id}`}>
-
-                    <button>Editar</button>
-
+                    <button className="btn btn-edit">
+                        Editar
+                    </button>
                 </Link>
 
                 <button
-
+                    className="btn btn-delete"
                     onClick={excluir}
-
-                    style={{
-
-                        marginLeft: "10px",
-
-                        background: "#d32f2f",
-
-                        color: "#fff"
-
-                    }}
-
                 >
-
                     Excluir
-
                 </button>
 
             </div>
