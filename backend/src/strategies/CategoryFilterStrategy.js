@@ -18,6 +18,10 @@ class CategoryFilterStrategy {
                 [category]
             );
 
+        console.log(
+            `[STRATEGY] Filtro por categoria: ${category}`
+        );
+
         return result.rows;
     }
 

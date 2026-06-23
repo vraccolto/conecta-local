@@ -1,6 +1,9 @@
 class FilterContext {
 
     constructor(strategy) {
+        console.log(
+            `[CONTEXT] Estratégia selecionada: ${strategy.constructor.name}`
+        );
         this.strategy = strategy;
     }
 

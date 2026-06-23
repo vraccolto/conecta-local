@@ -1,7 +1,8 @@
 Onde está?
 src/strategies/
-Sem Strategy
 
+
+Sem Strategy:
 Controller:
 
 if(category){
@@ -26,8 +27,8 @@ if(...)
 
 O Controller vira um monstro.
 
-Com Strategy
 
+Com Strategy:
 Cada filtro possui sua própria classe.
 
 CategoryFilterStrategy
@@ -53,8 +54,9 @@ Strategy escolhida
       │
       ▼
 Consulta executada
-Vantagem
 
+
+Vantagem:
 Para criar um novo filtro:
 
 UserFilterStrategy

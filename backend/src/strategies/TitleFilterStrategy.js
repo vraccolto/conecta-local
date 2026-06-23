@@ -18,6 +18,10 @@ class TitleFilterStrategy {
                 [`%${title}%`]
             );
 
+        console.log(
+            `[STRATEGY] Filtro por título: ${title}`
+        );
+
         return result.rows;
     }
 

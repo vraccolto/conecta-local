@@ -11,6 +11,9 @@ function Home() {
     setCategoriaSelecionada] =
     useState("Todas");
 
+  const [tituloBusca, setTituloBusca] =
+    useState("");
+
   async function carregarCategorias() {
 
     try {
@@ -73,6 +76,29 @@ function Home() {
 
   }
 
+  async function buscarPorTitulo() {
+
+    if (!tituloBusca.trim()) {
+      carregarAnuncios(categoriaSelecionada === "Todas"
+        ? null
+        : categoriaSelecionada
+      );
+      return;
+    }
+
+    try {
+
+      const resposta = await api.get(
+        `/ads?title=${tituloBusca}`
+      );
+
+      setAnuncios(resposta.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div
       style={{
@@ -93,6 +119,56 @@ function Home() {
       </p>
 
       <hr style={{ margin: "50px 0" }} />
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          marginBottom: "30px"
+        }}
+      >
+
+        <input
+          type="text"
+          placeholder="Pesquisar anúncio por título"
+          value={tituloBusca}
+          onChange={(e) =>
+            setTituloBusca(e.target.value)
+          }
+          onKeyDown={(e) => {
+
+            if (e.key === "Enter") {
+
+              buscarPorTitulo();
+
+            }
+          }}
+          style={{
+            width: "350px",
+            padding: "12px",
+            borderRadius: "8px",
+            border: "1px solid #ccc"
+          }}
+        />
+
+        <button
+          onClick={buscarPorTitulo}
+          style={{
+            background: "#1565c0",
+            color: "#fff",
+            border: "none",
+            borderRadius: "8px",
+            padding: "12px 20px",
+            cursor: "pointer"
+          }}
+        >
+
+          Buscar
+
+        </button>
+
+      </div>
 
       <h2>Categorias</h2>
 
