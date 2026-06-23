@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import AdCard from "../components/AdCard";
+import { useSearchParams } from "react-router-dom";
 
 function Ads() {
 
     const [anuncios, setAnuncios] = useState([]);
+    const [searchParams] = useSearchParams();
+
+    const category = searchParams.get("category");
 
     async function carregarAnuncios() {
 
         try {
 
-            const resposta = await api.get("/ads");
+            const url = category
+                ? `/ads?category=${category}`
+                : "/ads";
+
+            const resposta =
+                await api.get(url);
 
             setAnuncios(resposta.data);
 
@@ -28,7 +37,7 @@ function Ads() {
 
         carregarAnuncios();
 
-    }, []);
+    }, [category]);
 
     return (
 
@@ -39,7 +48,13 @@ function Ads() {
             }}
         >
 
-            <h1>Lista de anúncios</h1>
+            <h1>
+                {
+                    category
+                        ? `Categoria: ${category}`
+                        : "Todos os anúncios"
+                }
+            </h1>
 
             {
 

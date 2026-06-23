@@ -25,4 +25,9 @@ router.delete(
     adController.delete
 );
 
+router.get(
+    '/categories',
+    adController.findCategories
+);
+
 module.exports = router;

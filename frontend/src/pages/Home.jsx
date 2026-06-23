@@ -1,6 +1,78 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import api from "../services/api";
 
 function Home() {
+  const [categorias, setCategorias] = useState([]);
+
+  const [anuncios, setAnuncios] = useState([]);
+
+  const [categoriaSelecionada,
+    setCategoriaSelecionada] =
+    useState("Todas");
+
+  async function carregarCategorias() {
+
+    try {
+
+      const resposta =
+        await api.get("/categories");
+
+      setCategorias(resposta.data);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  }
+
+  async function carregarAnuncios(category = null) {
+
+    try {
+
+      const url = category
+        ? `/ads?category=${category}`
+        : "/ads";
+
+      const resposta =
+        await api.get(url);
+
+      setAnuncios(resposta.data);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  }
+
+  useEffect(() => {
+
+    carregarCategorias();
+
+    carregarAnuncios();
+
+  }, []);
+
+  async function filtrarCategoria(category) {
+
+    setCategoriaSelecionada(category);
+
+    if (category === "Todas") {
+
+      carregarAnuncios();
+
+      return;
+
+    }
+
+    carregarAnuncios(category);
+
+  }
+
   return (
     <div
       style={{
@@ -17,24 +89,8 @@ function Home() {
           marginBottom: "30px",
         }}
       >
-        Encontre profissionais ou divulgue seus serviços para a comunidade.
+        Divulgue seus serviços para a comunidade
       </p>
-
-      <Link to="/ads">
-        <button>Ver anúncios</button>
-      </Link>
-
-      <Link to="/novo-anuncio">
-        <button style={{ marginLeft: "15px" }}>
-          Publicar anúncio
-        </button>
-      </Link>
-
-      <Link to="/novo-usuario">
-        <button style={{ marginLeft: "15px" }}>
-          Cadastrar usuário
-        </button>
-      </Link>
 
       <hr style={{ margin: "50px 0" }} />
 
@@ -48,17 +104,190 @@ function Home() {
           marginTop: "30px",
         }}
       >
-        <div style={card}>🔧 Reparos</div>
 
-        <div style={card}>💻 Tecnologia</div>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+            justifyContent: "center",
+            marginTop: "20px"
+          }}
+        >
 
-        <div style={card}>📚 Educação</div>
+          <div
+            onClick={() =>
+              filtrarCategoria("Todas")
+            }
+            style={{
+              background:
+                categoriaSelecionada === "Todas"
+                  ? "#1976d2"
+                  : "#fff",
 
-        <div style={card}>🚗 Transporte</div>
+              color:
+                categoriaSelecionada === "Todas"
+                  ? "#fff"
+                  : "#000",
 
-        <div style={card}>🏠 Serviços Gerais</div>
+              padding: "15px 25px",
 
-        <div style={card}>🧹 Limpeza</div>
+              borderRadius: "10px",
+
+              cursor: "pointer",
+
+              boxShadow:
+                "0 2px 8px rgba(0,0,0,.1)",
+
+              fontWeight: "bold"
+            }}
+          >
+            Todas
+          </div>
+
+          {
+
+            categorias.map((item) => (
+
+              <div
+                key={item.category}
+                onClick={() =>
+                  filtrarCategoria(item.category)
+                }
+                style={{
+                  background:
+                    categoriaSelecionada === item.category
+                      ? "#1976d2"
+                      : "#fff",
+
+                  color:
+                    categoriaSelecionada === item.category
+                      ? "#fff"
+                      : "#000",
+
+                  padding: "15px 25px",
+
+                  borderRadius: "10px",
+
+                  cursor: "pointer",
+
+                  boxShadow:
+                    "0 2px 8px rgba(0,0,0,.1)",
+
+                  fontWeight: "bold",
+
+                  transition: "0.2s"
+                }}
+              >
+                {item.category}
+              </div>
+
+            ))
+
+          }
+
+        </div>
+
+
+      </div>
+
+      <hr style={{ margin: "40px 0" }} />
+
+      <h2>
+
+        {
+
+          categoriaSelecionada === "Todas"
+
+            ? "Todos os anúncios"
+
+            : `Categoria: ${categoriaSelecionada}`
+
+        }
+
+      </h2>
+
+      <div
+
+        style={{
+
+          display: "grid",
+
+          gridTemplateColumns:
+  "repeat(auto-fit, minmax(350px, 1fr))",
+
+          gap: "20px",
+
+          maxHeight: "500px",
+
+          overflowY: "auto",
+
+          marginTop: "20px"
+
+        }}
+
+      >
+
+        {
+
+          anuncios.map((anuncio) => (
+
+            <div
+
+              key={anuncio.id}
+
+              style={{
+
+                background: "#fff",
+
+                padding: "25px",
+
+                minHeight: "180px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+
+                borderRadius: "10px",
+
+                boxShadow:
+                  "0 2px 8px rgba(0,0,0,.1)"
+
+              }}
+
+            >
+
+              <h3>
+
+                {anuncio.title}
+
+              </h3>
+
+              <p>
+
+                <strong>
+
+                  Categoria:
+
+                </strong>
+
+                {" "}
+
+                {anuncio.category}
+
+              </p>
+
+              <p>
+
+                {anuncio.description}
+
+              </p>
+
+            </div>
+
+          ))
+
+        }
+
       </div>
     </div>
   );

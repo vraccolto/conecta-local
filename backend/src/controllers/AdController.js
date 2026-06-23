@@ -170,6 +170,28 @@ class AdController {
 
     }
 
+    async findCategories(req, res) {
+
+        try {
+
+            const categories =
+                await adRepository.findCategories();
+
+            return res.status(200)
+                .json(categories);
+
+        } catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+                message: 'Erro ao buscar categorias'
+            });
+
+        }
+
+    }
+
 }
 
 module.exports = new AdController();

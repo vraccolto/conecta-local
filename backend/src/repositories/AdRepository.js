@@ -36,6 +36,22 @@ class AdRepository {
         return result.rows;
     }
 
+    async findCategories() {
+
+        const query = `
+        SELECT DISTINCT category
+        FROM ads
+        WHERE category IS NOT NULL
+        ORDER BY category
+    `;
+
+        const result =
+            await pool.query(query);
+
+        return result.rows;
+
+    }
+
     async update(id, ad) {
 
         const query = `
