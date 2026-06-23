@@ -10,6 +10,9 @@ function Ads() {
 
     const category = searchParams.get("category");
 
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
+
     async function carregarAnuncios() {
 
         try {
@@ -18,15 +21,17 @@ function Ads() {
                 ? `/ads?category=${category}`
                 : "/ads";
 
-            const resposta =
-                await api.get(url);
+            const resposta = await api.get(url);
 
-            setAnuncios(resposta.data);
+            const apenasMeusAnuncios = resposta.data.filter(
+                (anuncio) => anuncio.user_id === Number(userId)
+            );
+
+            setAnuncios(apenasMeusAnuncios);
 
         } catch (error) {
 
             console.error(error);
-
             alert("Erro ao carregar anúncios.");
 
         }
@@ -34,9 +39,7 @@ function Ads() {
     }
 
     useEffect(() => {
-
         carregarAnuncios();
-
     }, [category]);
 
     return (
@@ -52,7 +55,7 @@ function Ads() {
                 {
                     category
                         ? `Categoria: ${category}`
-                        : "Todos os anúncios"
+                        : "Meus anúncios"
                 }
             </h1>
 
@@ -61,13 +64,9 @@ function Ads() {
                 anuncios.map((anuncio) => (
 
                     <AdCard
-
                         key={anuncio.id}
-
                         anuncio={anuncio}
-
                         atualizarLista={carregarAnuncios}
-
                     />
 
                 ))
